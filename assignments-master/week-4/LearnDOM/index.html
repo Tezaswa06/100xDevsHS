@@ -1,0 +1,78 @@
+<!--
+
+<html>
+    <body>
+        <div style="background-color: red;"> Hi There</div>
+        <div style="background-color: red;"> Hi There 2</div>
+    </body>
+</html>
+-->
+
+<!-- now in the above there are two divs which are having the same code so we need to get rid of it as it is 
+ violating the dry principle-->
+
+<!--
+ <html>
+    <style>
+        .container{ 
+            background-color: red;
+            font-size: 100;
+            padding: 20;
+            margin: 100;
+            color: green;
+        }
+    </style>
+    <body>
+        <div class="container"> 
+            Hi There
+        </div>
+        <div class="container"> 
+            Hi There 2
+        </div>
+
+    </body>
+</html>
+ -->
+<!-- the above code tells how we are going to use classes inside html -->
+
+
+<html>
+    <script>
+        let timeout;
+        function debouncePopulateDiv(){// here we have implemented debounce
+            clearTimeout(timeout);// here we have cleared the timeout because if we want to clear the previous timout as they get called
+            timeout = setTimeout(function(){
+                populateDiv2()
+            },1000);
+        }
+        function populateDiv(){// this function is same as the below function which is written as async function
+            const a = document.getElementById("firstNumber").value;
+            const b = document.getElementById("secondNumber").value;
+            const element = document.getElementById("finalSum");
+            fetch("http://localhost:3001/findSum?a=" + a + "&b=" + b)
+                .then(function(response){
+                    response.text()
+                        .then(function(ans){
+                            document.getElementById("finalSum").innerHTML = ans;
+                        })
+                });
+        }
+        async function populateDiv2() {
+            const a = document.getElementById("firstNumber").value;
+            const b = document.getElementById("secondNumber").value;
+
+            const response = await fetch("http://localhost:3001/findSum?a=" + a + "&b=" + b)
+            const ans = await response.text();
+            document.getElementById("finalSum").innerHTML = ans;
+        }
+    </script>
+    <body>
+        <input oninput="populateDiv2()" id="firstNumber" type="text" placeholder="First Number">
+        <br>
+        <br>
+        <input oninput="populateDiv2()" id="secondNumber" type="text" placeholder="Second Number">
+        <br>
+        <br>
+        <div id="finalSum"></div>
+    </body>
+</html>

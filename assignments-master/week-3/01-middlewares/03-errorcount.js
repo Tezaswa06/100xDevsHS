@@ -3,6 +3,7 @@ const assert = require('assert');
 const express = require('express');
 
 const app = express();
+app.use(express.json());
 let errorCount = 0;
 
 // You have been given an express server which has a few endpoints.
@@ -23,4 +24,12 @@ app.get('/errorCount', function(req, res) {
   res.status(200).json({ errorCount });
 });
 
+// error handling middleware
+
+app.use(function(err,req,res,next){
+  res.status(404).send({})
+  errorCount = errorCount + 1;
+})
+
+app.listen(3001);
 module.exports = app;
